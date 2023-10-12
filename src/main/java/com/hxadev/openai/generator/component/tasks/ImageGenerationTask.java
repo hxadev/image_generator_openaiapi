@@ -23,6 +23,17 @@ import feign.Feign;
 import feign.gson.GsonDecoder;
 import feign.gson.GsonEncoder;
 
+/**
+ * @author hxa.dev
+ *         This class is responsible for generating images from a prompt and
+ *         saving them to a file.
+ *         It implements the Runnable interface, which allows it to be used in a
+ *         threadpool.
+ *         It first checks if the GenerationInfo object is empty or if the
+ *         prompt is empty.
+ *         It then uses the DalleClient to generate images from the prompt, and
+ *         saves the images to a folder.
+ **/
 public class ImageGenerationTask implements Runnable {
 
     private GenerationInfo info;
@@ -31,6 +42,10 @@ public class ImageGenerationTask implements Runnable {
         this.info = info;
     }
 
+    // This code is a run method which checks whether the info object is empty and
+    // if the prompt is empty. It then calls the generateClient method and generates
+    // the imagesDalle by prompt. If the response data is empty, it throws an
+    // exception. Finally, it saves the imagesDalle.
     @Override
     public void run() {
         try {
@@ -52,14 +67,15 @@ public class ImageGenerationTask implements Runnable {
         } catch (GenerationInfoEmptyException e) {
             e.printStackTrace();
         } catch (NumberFormatException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (ResponseDataIsEmptyException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
+    // This method saves images from a given list of data (DataDalle) to a file
+    // directory based on the given prompt. The directory is created if it does not
+    // already exist. The images are named based on the prompt.
     private void saveImagesDalle(List<DataDalle> data, String prompt) {
         File directory = new File(FilesUtil.parsePromptToFolderName(prompt));
         data
@@ -81,6 +97,8 @@ public class ImageGenerationTask implements Runnable {
                 });
     }
 
+    // This method creates a DalleRequest object using the prompt and properties
+    // specified in the PropertiesUtil class.
     private DalleRequest generateRequest(String prompt) throws NumberFormatException {
         return DalleRequest.builder()
                 .prompt(prompt)
@@ -89,6 +107,8 @@ public class ImageGenerationTask implements Runnable {
                 .build();
     }
 
+    // This method creates and returns a DalleClient object. It uses Feign and Gson
+    // libraries to build the client and sets an authorization header.
     private DalleClient generateClient() {
         return Feign
                 .builder()

@@ -7,6 +7,14 @@ import java.util.Scanner;
 import com.hxadev.openai.generator.model.dto.GenerationInfo;
 import com.hxadev.openai.generator.service.DalleImageGenerationService;
 
+/**
+ * @author hxa.dev
+ *         This code is a starter for the DalleImageGenerationService which
+ *         generates images
+ *         from user input. It prints a banner and then prompts the user for
+ *         input which is then
+ *         used to generate an image.
+ */
 public class DalleStarter {
     private DalleImageGenerationService generationService;
 
